@@ -1,5 +1,5 @@
 import './style.css'
+import Game from './Game'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<div>Hello</div>
-`
+const game = new Game()
+game.init().catch(console.error)
