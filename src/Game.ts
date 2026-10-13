@@ -6,6 +6,17 @@ class Game {
   #app: Application = new Application()
   #scene: Container = new Container({ isRenderGroup: true })
 
+  #createPlayAreaRect() {
+    return new Graphics()
+      .rect(
+        CONSTANTS.playAreaX,
+        CONSTANTS.playAreaY,
+        CONSTANTS.playAreaWidth,
+        CONSTANTS.playAreaHeight,
+      )
+      .fill(CONSTANTS.playAreaColor)
+  }
+
   async init() {
     await this.#app.init({
       width: CONSTANTS.canvasWidth,
@@ -19,15 +30,8 @@ class Game {
     if (!appElem) throw new Error('#app element not found')
     appElem.appendChild(this.#app.canvas)
 
-    const playArea = new Graphics()
-    playArea
-      .rect(
-        CONSTANTS.playAreaX,
-        CONSTANTS.playAreaY,
-        CONSTANTS.playAreaWidth,
-        CONSTANTS.playAreaHeight,
-      )
-      .fill(CONSTANTS.playAreaColor)
+    const playArea = this.#createPlayAreaRect()
+    const mask = this.#createPlayAreaRect()
 
     const triangle = new Triangle(
       50,
@@ -38,6 +42,7 @@ class Game {
     ).stroke({ width: 2, color: 0x000000 })
 
     this.#scene.addChild(playArea)
+    this.#scene.mask = mask
     this.#scene.addChild(triangle)
 
     this.#app.stage.addChild(this.#scene)
