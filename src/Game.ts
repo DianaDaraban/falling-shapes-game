@@ -2,6 +2,7 @@ import { Application, Container, Graphics } from 'pixi.js'
 import { CONSTANTS } from './constants'
 import Triangle from './shapes/Triangle'
 import type Shape from './shapes/Shape'
+import { randomNumber } from './utils/randomNumber'
 
 class Game {
   #app: Application = new Application()
@@ -17,6 +18,23 @@ class Game {
         CONSTANTS.playAreaHeight,
       )
       .fill(CONSTANTS.playAreaColor)
+  }
+
+  #generateShape() {
+    const x = randomNumber(
+      CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+      CONSTANTS.playAreaWidth + CONSTANTS.playAreaX - CONSTANTS.shapeSize / 2,
+    )
+    const triangle = new Triangle(
+      CONSTANTS.shapeSize,
+      CONSTANTS.shapeSize,
+      x,
+      CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
+      'green',
+    )
+
+    this.#scene.addChild(triangle)
+    this.#shapes.push(triangle)
   }
 
   async init() {
@@ -35,28 +53,10 @@ class Game {
     const playArea = this.#createPlayAreaRect()
     const mask = this.#createPlayAreaRect()
 
-    const triangle = new Triangle(
-      50,
-      50,
-      400,
-      CONSTANTS.playAreaY - 25,
-      '#ff0000',
-    ).stroke({ width: 2, color: 0x000000 })
-
-    const secondTriangle = new Triangle(
-      60,
-      60,
-      200,
-      CONSTANTS.playAreaY - 25,
-      '#ff0000',
-    )
-
     this.#scene.addChild(playArea)
     this.#scene.mask = mask
-    this.#scene.addChild(triangle)
-    this.#scene.addChild(secondTriangle)
-    this.#shapes.push(triangle)
-    this.#shapes.push(secondTriangle)
+
+    this.#generateShape()
 
     this.#app.stage.addChild(this.#scene)
 

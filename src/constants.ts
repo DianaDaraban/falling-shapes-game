@@ -8,4 +8,5 @@ export const CONSTANTS = {
   playAreaHeight: 400,
   playAreaColor: '#a7ccb4',
   initialGravity: 200,
+  shapeSize: 50
 }
