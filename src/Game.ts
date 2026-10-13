@@ -8,6 +8,8 @@ class Game {
   #app: Application = new Application()
   #scene: Container = new Container({ isRenderGroup: true })
   #shapes: Shape[] = []
+  #shapesPerSecond = CONSTANTS.defaultShapesPerSecond
+  #secondsSinceLastShape = 0
 
   #createPlayAreaRect() {
     return new Graphics()
@@ -61,13 +63,21 @@ class Game {
     this.#app.stage.addChild(this.#scene)
 
     this.#app.ticker.add((ticker) => {
+      const seconds = ticker.deltaMS / 1000
+      this.#secondsSinceLastShape += seconds
+      const secondsBetweenShapes = 1 / this.#shapesPerSecond
+
+      if (this.#secondsSinceLastShape >= secondsBetweenShapes) {
+        this.#generateShape()
+        this.#secondsSinceLastShape = 0
+      }
       for (let i = this.#shapes.length - 1; i >= 0; i--) {
         const shape = this.#shapes[i]
         if (
           shape.getBounds().minY <=
           CONSTANTS.playAreaY + CONSTANTS.playAreaHeight
         ) {
-          shape.update(ticker.deltaMS / 1000, CONSTANTS.initialGravity)
+          shape.update(seconds, CONSTANTS.defaultGravity)
         } else {
           this.#scene.removeChild(shape)
           this.#shapes.splice(i, 1)
