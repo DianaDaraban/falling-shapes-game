@@ -1,9 +1,10 @@
 import { Application, Container, Graphics } from 'pixi.js'
 import { CONSTANTS } from './constants'
+import Triangle from './shapes/Triangle'
 
 class Game {
   #app: Application = new Application()
-  #container: Container = new Container()
+  #scene: Container = new Container({ isRenderGroup: true })
 
   async init() {
     await this.#app.init({
@@ -13,6 +14,7 @@ class Game {
       resolution: window.devicePixelRatio,
       autoDensity: true,
     })
+
     const appElem = document.querySelector('#app')
     if (!appElem) throw new Error('#app element not found')
     appElem.appendChild(this.#app.canvas)
@@ -26,8 +28,23 @@ class Game {
         CONSTANTS.playAreaHeight,
       )
       .fill(CONSTANTS.playAreaColor)
-    this.#container.addChild(playArea)
-    this.#app.stage.addChild(this.#container)
+
+    const triangle = new Triangle(
+      50,
+      50,
+      400,
+      CONSTANTS.playAreaY - 25,
+      '#ff0000',
+    ).stroke({ width: 2, color: 0x000000 })
+
+    this.#scene.addChild(playArea)
+    this.#scene.addChild(triangle)
+
+    this.#app.stage.addChild(this.#scene)
+
+    this.#app.ticker.add((ticker) => {
+      triangle.update(ticker.deltaMS / 1000, CONSTANTS.initialGravity)
+    })
   }
 }
 export default Game

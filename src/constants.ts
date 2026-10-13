@@ -7,4 +7,5 @@ export const CONSTANTS = {
   playAreaWidth: 500,
   playAreaHeight: 400,
   playAreaColor: '#a7ccb4',
+  initialGravity: 200,
 }
