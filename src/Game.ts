@@ -22,21 +22,34 @@ class Game {
       .fill(CONSTANTS.playAreaColor)
   }
 
-  #generateShape() {
-    const x = randomNumber(
-      CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
-      CONSTANTS.playAreaWidth + CONSTANTS.playAreaX - CONSTANTS.shapeSize / 2,
-    )
+  #removeShape(shape: Shape) {
+    this.#scene.removeChild(shape)
+    this.#shapes = this.#shapes.filter((item) => item !== shape)
+    shape.destroy({ context: true })
+  }
+
+  #generateShape(x?: number, y?: number) {
     const triangle = new Triangle(
       CONSTANTS.shapeSize,
       CONSTANTS.shapeSize,
-      x,
-      CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
+      x ??
+        randomNumber(
+          CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+          CONSTANTS.playAreaWidth +
+            CONSTANTS.playAreaX -
+            CONSTANTS.shapeSize / 2,
+        ),
+      y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
       'green',
     )
 
     this.#scene.addChild(triangle)
     this.#shapes.push(triangle)
+
+    triangle.eventMode = 'static'
+    triangle.on('pointerdown', () => {
+      this.#removeShape(triangle)
+    })
   }
 
   async init() {
@@ -55,10 +68,13 @@ class Game {
     const playArea = this.#createPlayAreaRect()
     const mask = this.#createPlayAreaRect()
 
+    playArea.eventMode = 'static'
+    playArea.on('pointerdown', (event) => {
+      this.#generateShape(event.global.x, event.global.y)
+    })
+
     this.#scene.addChild(playArea)
     this.#scene.mask = mask
-
-    this.#generateShape()
 
     this.#app.stage.addChild(this.#scene)
 
@@ -79,9 +95,7 @@ class Game {
         ) {
           shape.update(seconds, CONSTANTS.defaultGravity)
         } else {
-          this.#scene.removeChild(shape)
-          this.#shapes.splice(i, 1)
-          shape.destroy({ context: true })
+          this.#removeShape(shape)
         }
       }
     })
