@@ -1,0 +1,48 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.main_container {
+  position: relative;
+}
+
+.info_panel_container {
+  display: flex;
+  width: max-content;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem;
+  pointer-events: none;
+  position: absolute;
+  left: var(--play-area-x);
+  top: var(--play-area-y);
+  transform: translateY(-100%);
+  background-color: rgba(var(--GREEN), 0.6);
+  color: var(--textSecondary);
+}
+
+/* infoPanel: '#04110d',
+  text: '#34d399',
+  textSecondary: '#8fb9a8', */
+
+.info_panel_container > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 8rem;
+}
+
+#shapes_counter,
+#shapes_area {
+  border: 1px solid var(--text);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.shapes_area_container > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}

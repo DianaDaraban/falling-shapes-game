@@ -6,7 +6,20 @@
     <title>falling-shapes-game</title>
   </head>
   <body>
+    <div class="main_container">
+ <div class="info_panel_container">
+      <div class="current_shapes_container">
+        <span>Number of current shapes</span>
+        <span id="shapes_counter">0</span>
+      </div>
+      <div class="shapes_area_container">
+        <span>Surface area occupied by shapes</span>
+        <div><span id="shapes_area">0</span><span>px²</span></div>
+      </div>
+    </div>
     <div id="app"></div>
+    </div>
+   
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
