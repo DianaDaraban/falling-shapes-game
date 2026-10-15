@@ -22,10 +22,6 @@
   color: var(--textSecondary);
 }
 
-/* infoPanel: '#04110d',
-  text: '#34d399',
-  textSecondary: '#8fb9a8', */
-
 .info_panel_container > div {
   display: flex;
   flex-direction: column;

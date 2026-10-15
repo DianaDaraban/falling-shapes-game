@@ -1,9 +1,9 @@
 import { Application, Container, Graphics } from 'pixi.js'
 import { CONSTANTS, COLORS, SHAPE_COLORS } from './constants'
-import Triangle from './shapes/Triangle'
 import type Shape from './shapes/Shape'
 import { randomNumber } from './utils/randomNumber'
 import InfoPanel from './components/InfoPanel'
+import PolygonShape from './shapes/PolygonShape'
 
 class Game {
   #app: Application = new Application()
@@ -33,7 +33,7 @@ class Game {
     root.style.setProperty('--play-area-x', `${CONSTANTS.playAreaX}px`)
     root.style.setProperty('--play-area-y', `${CONSTANTS.playAreaY}px`)
 
-    Object.entries(COLORS).forEach(color => {
+    Object.entries(COLORS).forEach((color) => {
       root.style.setProperty('--' + color[0], color[1])
     })
   }
@@ -98,9 +98,8 @@ class Game {
   }
 
   #generateShape(x?: number, y?: number) {
-    const triangle = new Triangle(
-      CONSTANTS.shapeSize,
-      CONSTANTS.shapeSize,
+    const polygon = new PolygonShape(
+      [-25, -25, 25, -25, 25, 25, -25, 25],
       x ??
         randomNumber(
           CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
@@ -112,12 +111,12 @@ class Game {
       SHAPE_COLORS.shape1,
     )
 
-    this.#scene.addChild(triangle)
-    this.#shapes.push(triangle)
+    this.#scene.addChild(polygon)
+    this.#shapes.push(polygon)
 
-    triangle.eventMode = 'static'
-    triangle.on('pointerdown', () => {
-      this.#removeShape(triangle)
+    polygon.eventMode = 'static'
+    polygon.on('pointerdown', () => {
+      this.#removeShape(polygon)
     })
 
     this.#updateInfoPanel()
