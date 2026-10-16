@@ -6,14 +6,14 @@ export const COLORS = {
   textSecondary: '#8fb9a8',
 }
 
-export const SHAPE_COLORS = {
-  shape1: '#ff6b6b',
-  shape2: '#fbbf24',
-  shape3: '#f472b6',
-  shape4: '#38bdf8',
-  shape5: '#a78bfa',
-  shape6: '#2dd4bf',
-}
+export const SHAPE_COLORS: string[] = [
+  '#ff6b6b',
+  '#fbbf24',
+  '#f472b6',
+  '#38bdf8',
+  '#a78bfa',
+  '#2dd4bf',
+]
 
 export const CONSTANTS = {
   canvasWidth: 800,
@@ -25,4 +25,5 @@ export const CONSTANTS = {
   defaultGravity: 200,
   shapeSize: 50,
   defaultShapesPerSecond: 1,
+  roundRect: 10,
 }

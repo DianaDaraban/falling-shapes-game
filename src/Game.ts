@@ -1,12 +1,9 @@
 import { Application, Container, Graphics } from 'pixi.js'
-import { CONSTANTS, COLORS, SHAPE_COLORS } from './constants'
+import { CONSTANTS, COLORS } from './constants'
 import type Shape from './shapes/Shape'
 import { randomNumber } from './utils/randomNumber'
 import InfoPanel from './components/InfoPanel'
-import PolygonShape from './shapes/PolygonShape'
-import CircleShape from './shapes/CircleShape'
-import { regularPolygonPoints, starPoints } from './../src/utils/polygonHelpers'
-import EllipseShape from './shapes/EllipseShape'
+import ShapeFactory from './shapes/ShapeFactory'
 
 class Game {
   #app: Application = new Application()
@@ -86,7 +83,7 @@ class Game {
         CONSTANTS.playAreaY,
         CONSTANTS.playAreaWidth,
         CONSTANTS.playAreaHeight,
-        10,
+        CONSTANTS.roundRect,
       )
       .fill({ color: COLORS.playArea, alpha: 0.8 })
       .stroke({ width: 1, color: COLORS.textSecondary, alpha: 0.4 })
@@ -101,51 +98,20 @@ class Game {
   }
 
   #generateShape(x?: number, y?: number) {
-    // const polygon = new PolygonShape(
-    //   starPoints(5, 25, 11),
-    //   x ??
-    //     randomNumber(
-    //       CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
-    //       CONSTANTS.playAreaWidth +
-    //         CONSTANTS.playAreaX -
-    //         CONSTANTS.shapeSize / 2,
-    //     ),
-    //   y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
-    //   SHAPE_COLORS.shape1,
-    // )
-
-    // const circle = new CircleShape(
-    //   CONSTANTS.shapeSize / 2,
-    //   x ??
-    //     randomNumber(
-    //       CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
-    //       CONSTANTS.playAreaWidth +
-    //         CONSTANTS.playAreaX -
-    //         CONSTANTS.shapeSize / 2,
-    //     ),
-    //   y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
-    //   SHAPE_COLORS.shape1,
-    // )
-    const ellipse = new EllipseShape(
-      CONSTANTS.shapeSize,
-      CONSTANTS.shapeSize / 2,
-      x ??
-        randomNumber(
-          CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
-          CONSTANTS.playAreaWidth +
-            CONSTANTS.playAreaX -
-            CONSTANTS.shapeSize / 2,
-        ),
-      y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
-      SHAPE_COLORS.shape1,
+    let randomX = randomNumber(
+      CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+      CONSTANTS.playAreaWidth + CONSTANTS.playAreaX - CONSTANTS.shapeSize / 2,
     )
+    let randomY = CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2
 
-    this.#scene.addChild(ellipse)
-    this.#shapes.push(ellipse)
+    const shape = ShapeFactory.create(x ?? randomX, y ?? randomY)
 
-    ellipse.eventMode = 'static'
-    ellipse.on('pointerdown', () => {
-      this.#removeShape(ellipse)
+    this.#scene.addChild(shape)
+    this.#shapes.push(shape)
+
+    shape.eventMode = 'static'
+    shape.on('pointerdown', () => {
+      this.#removeShape(shape)
     })
 
     this.#updateInfoPanel()

@@ -15,14 +15,3 @@ class CircleShape extends Shape {
 }
 
 export default CircleShape
-
-// const gradient = new FillGradient({
-//   end: { x: 1, y: 0 },
-//   colorStops: [
-//     { offset: 0, color: 0xff0000 }, // Red at start
-//     { offset: 0.5, color: 0x00ff00 }, // Green at middle
-//     { offset: 1, color: 0x0000ff }, // Blue at end
-//   ],
-// })
-
-// graphics.circle(250, 100, 40).fill({ fill: gradient })
