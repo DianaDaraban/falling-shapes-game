@@ -51,7 +51,9 @@ class Game {
 
     playArea.eventMode = 'static'
     playArea.on('pointerdown', (event) => {
-      this.#generateShape(event.global.x, event.global.y)
+      this.#addShape(
+        ShapeFactory.createIrregular(event.global.x, event.global.y),
+      )
     })
 
     this.#scene.addChild(playArea)
@@ -66,7 +68,15 @@ class Game {
       const secondsBetweenShapes = 1 / this.#shapesPerSecond
 
       if (this.#secondsSinceLastShape >= secondsBetweenShapes) {
-        this.#generateShape()
+        const randomX = randomNumber(
+          CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+          CONSTANTS.playAreaWidth +
+            CONSTANTS.playAreaX -
+            CONSTANTS.shapeSize / 2,
+        )
+        const randomY = CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2
+
+        this.#addShape(ShapeFactory.create(randomX, randomY))
         this.#secondsSinceLastShape = 0
       }
       for (let i = this.#shapes.length - 1; i >= 0; i--) {
@@ -104,15 +114,7 @@ class Game {
     this.#updateInfoPanel()
   }
 
-  #generateShape(x?: number, y?: number) {
-    const randomX = randomNumber(
-      CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
-      CONSTANTS.playAreaWidth + CONSTANTS.playAreaX - CONSTANTS.shapeSize / 2,
-    )
-    const randomY = CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2
-
-    const shape = ShapeFactory.create(x ?? randomX, y ?? randomY)
-
+  #addShape(shape: Shape) {
     this.#scene.addChild(shape)
     this.#shapes.push(shape)
 
@@ -120,7 +122,6 @@ class Game {
     shape.on('pointerdown', () => {
       this.#removeShape(shape)
     })
-
     this.#updateInfoPanel()
   }
 

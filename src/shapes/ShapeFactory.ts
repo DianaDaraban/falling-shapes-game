@@ -1,5 +1,9 @@
 import { CONSTANTS, SHAPE_COLORS } from '../constants'
-import { regularPolygonPoints, starPoints } from '../utils/polygonHelpers'
+import {
+  irregularPolygonPoints,
+  regularPolygonPoints,
+  starPoints,
+} from '../utils/polygonHelpers'
 import PolygonShape from './PolygonShape'
 import Shape from './Shape'
 import CircleShape from './CircleShape'
@@ -29,11 +33,25 @@ class ShapeFactory {
     (x, y, color) =>
       new EllipseShape(this.#radius, this.#radius / 2, x, y, color),
   ]
+
+  static #randomColor(): string {
+    return SHAPE_COLORS[randomInt(0, SHAPE_COLORS.length)]
+  }
+
   static create(x: number, y: number): Shape {
-    const creator = this.#creators[randomInt(0 ,this.#creators.length)]
-    const color = SHAPE_COLORS[randomInt(0,SHAPE_COLORS.length)]
+    const creator = this.#creators[randomInt(0, this.#creators.length)]
+    const color = this.#randomColor()
 
     return creator(x, y, color)
+  }
+
+  static createIrregular(x: number, y: number): Shape {
+    return new PolygonShape(
+      irregularPolygonPoints(this.#radius),
+      x,
+      y,
+      this.#randomColor(),
+    )
   }
 }
 
