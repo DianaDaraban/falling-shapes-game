@@ -4,6 +4,7 @@ import type Shape from './shapes/Shape'
 import { randomNumber } from './utils/randomNumber'
 import InfoPanel from './components/InfoPanel'
 import PolygonShape from './shapes/PolygonShape'
+import { regularPolygonPoints, starPoints } from './../src/utils/polygonHelpers'
 
 class Game {
   #app: Application = new Application()
@@ -99,7 +100,7 @@ class Game {
 
   #generateShape(x?: number, y?: number) {
     const polygon = new PolygonShape(
-      [-25, -25, 25, -25, 25, 25, -25, 25],
+      starPoints(5, 25, 11),
       x ??
         randomNumber(
           CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,

@@ -1,4 +1,5 @@
 import Shape from './Shape'
+import { polygonArea } from '../utils/polygonHelpers'
 
 class PolygonShape extends Shape {
   readonly points: number[]
@@ -17,20 +18,7 @@ class PolygonShape extends Shape {
   }
 
   get area(): number {
-    let sum = 0
-    const n = this.points.length / 2
-
-    for (let i = 0; i < n; i++) {
-      const j = (i + 1) % n
-      const x = this.points[2 * i]
-      const y = this.points[2 * i + 1]
-      const xNext = this.points[2 * j]
-      const yNext = this.points[2 * j + 1]
-
-      sum += x * yNext - xNext * y
-    }
-
-    return Math.abs(sum) / 2
+    return polygonArea(this.points)
   }
 }
 
