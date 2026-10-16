@@ -4,7 +4,9 @@ import type Shape from './shapes/Shape'
 import { randomNumber } from './utils/randomNumber'
 import InfoPanel from './components/InfoPanel'
 import PolygonShape from './shapes/PolygonShape'
+import CircleShape from './shapes/CircleShape'
 import { regularPolygonPoints, starPoints } from './../src/utils/polygonHelpers'
+import EllipseShape from './shapes/EllipseShape'
 
 class Game {
   #app: Application = new Application()
@@ -99,8 +101,34 @@ class Game {
   }
 
   #generateShape(x?: number, y?: number) {
-    const polygon = new PolygonShape(
-      starPoints(5, 25, 11),
+    // const polygon = new PolygonShape(
+    //   starPoints(5, 25, 11),
+    //   x ??
+    //     randomNumber(
+    //       CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+    //       CONSTANTS.playAreaWidth +
+    //         CONSTANTS.playAreaX -
+    //         CONSTANTS.shapeSize / 2,
+    //     ),
+    //   y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
+    //   SHAPE_COLORS.shape1,
+    // )
+
+    // const circle = new CircleShape(
+    //   CONSTANTS.shapeSize / 2,
+    //   x ??
+    //     randomNumber(
+    //       CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
+    //       CONSTANTS.playAreaWidth +
+    //         CONSTANTS.playAreaX -
+    //         CONSTANTS.shapeSize / 2,
+    //     ),
+    //   y ?? CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2,
+    //   SHAPE_COLORS.shape1,
+    // )
+    const ellipse = new EllipseShape(
+      CONSTANTS.shapeSize,
+      CONSTANTS.shapeSize / 2,
       x ??
         randomNumber(
           CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
@@ -112,12 +140,12 @@ class Game {
       SHAPE_COLORS.shape1,
     )
 
-    this.#scene.addChild(polygon)
-    this.#shapes.push(polygon)
+    this.#scene.addChild(ellipse)
+    this.#shapes.push(ellipse)
 
-    polygon.eventMode = 'static'
-    polygon.on('pointerdown', () => {
-      this.#removeShape(polygon)
+    ellipse.eventMode = 'static'
+    ellipse.on('pointerdown', () => {
+      this.#removeShape(ellipse)
     })
 
     this.#updateInfoPanel()
