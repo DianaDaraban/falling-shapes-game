@@ -2,8 +2,9 @@ export const COLORS = {
   canvasBackground: '#071a14',
   playArea: '#0f2e25',
   infoPanel: '#04110d',
-  text: '#34d399',
-  textSecondary: '#8fb9a8',
+  text: '#dde5f0',
+  textSecondary: '#cad8eb',
+  accent: '#9ef0c0',
 }
 
 export const SHAPE_COLORS: string[] = [
@@ -15,13 +16,31 @@ export const SHAPE_COLORS: string[] = [
   '#2dd4bf',
 ]
 
-export const CONSTANTS = {
+const DESKTOP_LAYOUT = {
   canvasWidth: 800,
-  canvasHeight: 600,
+  canvasHeight: 660,
   playAreaX: 150,
-  playAreaY: 100,
+  playAreaY: 140,
   playAreaWidth: 500,
-  playAreaHeight: 400,
+  playAreaHeight: 380,
+}
+
+const phoneWidth = window.innerWidth - 16
+const phoneHeight = window.innerHeight - 200
+
+const PHONE_LAYOUT = {
+  canvasWidth: phoneWidth,
+  canvasHeight: phoneHeight,
+  playAreaX: 8,
+  playAreaY: 8,
+  playAreaWidth: phoneWidth - 16,
+  playAreaHeight: phoneHeight - 16,
+}
+
+const isPhone = window.matchMedia('(max-width: 38em)').matches
+
+export const CONSTANTS = {
+  ...(isPhone ? PHONE_LAYOUT : DESKTOP_LAYOUT),
   defaultGravity: 100,
   minGravity: 10,
   maxGravity: 320,

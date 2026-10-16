@@ -39,6 +39,19 @@ class Game {
     const root = document.documentElement
     root.style.setProperty('--play-area-x', `${CONSTANTS.playAreaX}px`)
     root.style.setProperty('--play-area-y', `${CONSTANTS.playAreaY}px`)
+    root.style.setProperty(
+      '--bottom-band-height',
+      `${((CONSTANTS.canvasHeight - CONSTANTS.playAreaY - CONSTANTS.playAreaHeight) / CONSTANTS.canvasHeight) * 100}%`,
+    )
+    root.style.setProperty(
+      '--play-area-top',
+      `${(CONSTANTS.playAreaY / CONSTANTS.canvasHeight) * 100}%`,
+    )
+    root.style.setProperty(
+      '--play-area-width',
+      `${(CONSTANTS.playAreaWidth / CONSTANTS.canvasWidth) * 100}%`,
+    )
+    root.style.setProperty('--canvas-width', `${CONSTANTS.canvasWidth}px`)
 
     Object.entries(COLORS).forEach((color) => {
       root.style.setProperty('--' + color[0], color[1])
