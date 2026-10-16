@@ -30,8 +30,8 @@ class ShapeFactory {
       new EllipseShape(this.#radius, this.#radius / 2, x, y, color),
   ]
   static create(x: number, y: number): Shape {
-    const creator = this.#creators[randomInt(this.#creators.length)]
-    const color = SHAPE_COLORS[randomInt(SHAPE_COLORS.length)]
+    const creator = this.#creators[randomInt(0 ,this.#creators.length)]
+    const color = SHAPE_COLORS[randomInt(0,SHAPE_COLORS.length)]
 
     return creator(x, y, color)
   }
