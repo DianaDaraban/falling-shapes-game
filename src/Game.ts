@@ -4,6 +4,8 @@ import type Shape from './shapes/Shape'
 import { randomNumber } from './utils/randomNumber'
 import InfoPanel from './components/InfoPanel'
 import ShapeFactory from './shapes/ShapeFactory'
+import { getElement } from './utils/getElement'
+import Controls from './components/Controls'
 
 class Game {
   #app: Application = new Application()
@@ -12,6 +14,12 @@ class Game {
   #shapes: Shape[] = []
   #shapesPerSecond = CONSTANTS.defaultShapesPerSecond
   #secondsSinceLastShape = 0
+  #gravity = CONSTANTS.defaultGravity
+  #controls = new Controls({
+    onShapesPerSecondChange: (direction) =>
+      this.#changeShapesPerSecond(direction),
+    onGravityChange: (direction) => this.#changeGravity(direction),
+  })
 
   async #initApp() {
     await this.#app.init({
@@ -23,8 +31,7 @@ class Game {
       autoDensity: true,
     })
 
-    const appElem = document.querySelector('#app')
-    if (!appElem) throw new Error('#app element not found')
+    const appElem = getElement('#app')
     appElem.appendChild(this.#app.canvas)
   }
 
@@ -68,7 +75,7 @@ class Game {
           shape.getBounds().minY <=
           CONSTANTS.playAreaY + CONSTANTS.playAreaHeight
         ) {
-          shape.update(seconds, CONSTANTS.defaultGravity)
+          shape.update(seconds, this.#gravity)
         } else {
           this.#removeShape(shape)
         }
@@ -98,11 +105,11 @@ class Game {
   }
 
   #generateShape(x?: number, y?: number) {
-    let randomX = randomNumber(
+    const randomX = randomNumber(
       CONSTANTS.playAreaX + CONSTANTS.shapeSize / 2,
       CONSTANTS.playAreaWidth + CONSTANTS.playAreaX - CONSTANTS.shapeSize / 2,
     )
-    let randomY = CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2
+    const randomY = CONSTANTS.playAreaY - CONSTANTS.shapeSize / 2
 
     const shape = ShapeFactory.create(x ?? randomX, y ?? randomY)
 
@@ -127,11 +134,34 @@ class Game {
     this.#infoPanel.update(shapesNumber, shapesArea)
   }
 
+  #changeShapesPerSecond(direction: number) {
+    const newShapesPerSecond =
+      this.#shapesPerSecond + direction * CONSTANTS.shapesPerSecondStep
+    this.#shapesPerSecond =
+      newShapesPerSecond <= CONSTANTS.maxShapesPerSecond &&
+      newShapesPerSecond >= CONSTANTS.minShapesPerSecond
+        ? newShapesPerSecond
+        : this.#shapesPerSecond
+
+    this.#controls.update(this.#shapesPerSecond, this.#gravity)
+  }
+
+  #changeGravity(direction: number) {
+    const newGravity = this.#gravity + direction * CONSTANTS.gravityStep
+    this.#gravity =
+      newGravity <= CONSTANTS.maxGravity && newGravity >= CONSTANTS.minGravity
+        ? newGravity
+        : this.#gravity
+
+    this.#controls.update(this.#shapesPerSecond, this.#gravity)
+  }
+
   async init() {
     await this.#initApp()
     this.#setCssVariables()
     this.#createPlayArea()
     this.#startTicker()
+    this.#controls.update(this.#shapesPerSecond, this.#gravity)
   }
 }
 export default Game

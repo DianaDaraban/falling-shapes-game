@@ -7,19 +7,37 @@
   </head>
   <body>
     <div class="main_container">
- <div class="info_panel_container">
-      <div class="current_shapes_container">
-        <span>Number of current shapes</span>
-        <span id="shapes_counter">0</span>
+      <div class="info_panel_container">
+        <div class="current_shapes_container">
+          <span>Number of current shapes</span>
+          <span id="shapes_counter">0</span>
+        </div>
+        <div class="shapes_area_container">
+          <span>Surface area occupied by shapes</span>
+          <div><span id="shapes_area">0</span><span>px²</span></div>
+        </div>
       </div>
-      <div class="shapes_area_container">
-        <span>Surface area occupied by shapes</span>
-        <div><span id="shapes_area">0</span><span>px²</span></div>
+      <div id="app"></div>
+      <div class="controls_container">
+        <div class="shapes_per_second_container">
+          <span>Number of shapes per second</span>
+          <div class="shapes_per_second_counter">
+            <button id="shapes_per_second_decrease" type="button">−</button>
+            <span id="shapes_per_second_value">0</span>
+            <button id="shapes_per_second_increase" type="button">+</button>
+          </div>
+        </div>
+        <div class="gravity_container">
+          <span>Gravity value</span>
+          <div class="gravity_counter">
+            <button id="gravity_decrease" type="button">−</button>
+            <span id="gravity_value">0</span>
+            <button id="gravity_increase" type="button">+</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div id="app"></div>
-    </div>
-   
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
